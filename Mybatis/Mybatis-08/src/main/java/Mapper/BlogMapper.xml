@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--mybatis的核心配置文件-->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mapper.BlogMapper">
+    <insert id="add" parameterType="pojo.Blog">
+        insert into mybatis.blog(id,title,authoe,create_time,views)values
+        (#{id},#{title},#{authoe},#{createTime},#{views});
+    </insert>
+
+    <select id="add2" parameterType="map" resultType="pojo.Blog">
+        select * from mybatis.blog where 1=1
+        <if test="title != null">
+            title=#{title}
+        </if>
+        <if test="views != null">
+            views=#{views}
+        </if>
+    </select>
+
+    <sql id="if-sql">
+        <if test="title != null">
+            title=#{title}
+        </if>
+        <if test="views != null">
+            views=#{views}
+        </if>
+    </sql>
+
+    <select id="add3" parameterType="map" resultType="pojo.Blog">
+        select * from mybatis.blog
+    <where>
+        <include refid="if-sql"></include>
+    </where>
+    </select>
+    
+    <select id="update" parameterType="map"   resultType="pojo.Blog">
+        select * from mybatis.blog 
+    <where>
+        <if test="title != null">
+            title=#{title}
+        </if>
+        <if test="views != null">
+            views=#{views}
+        </if>
+    </where>
+    </select>
+
+    <select id="add4" resultType="pojo.Blog" parameterType="map">
+        select * from mybatis.blog
+    <where>
+        <foreach collection="ids" item="id" open="and(" close=")" separator="or">
+            id=#{id}
+        </foreach>
+    </where>
+    </select>
+</mapper>
